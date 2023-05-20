@@ -3,182 +3,82 @@ import ArgumentType from 'scratch-vm/src/extension-support/argument-type'
 import BlockType from 'scratch-vm/src/extension-support/block-type'
 import Cast from 'scratch-vm/src/util/cast'
 
-class GamepadExtension {
+class TextChatSkyWayExtension {
   private runtime: Runtime
 
   private gamepadIndex: number
 
+  private static apikey: string = ''
+
   constructor(runtime: Runtime) {
     this.runtime = runtime
 
-    this.gamepadIndex = null
-
-    window.addEventListener('gamepadconnected', event => {
-      // console.log('Gamepad has been connected')
-      this.gamepadIndex = event.gamepad.index
-    })
-    window.addEventListener('gamepaddisconnected', () => {
-      // console.log('Gamepad has been disconnected')
-      this.gamepadIndex = null
-    })
+    if (TextChatSkyWayExtension.apikey === '') {
+      const apikey = window.prompt('SkyWayのAPIキーを入力してください: ', '')
+      if (apikey) {
+        TextChatSkyWayExtension.apikey = apikey
+        console.log(TextChatSkyWayExtension.apikey)
+      }
+    }
   }
 
   getInfo() {
     return {
-      id: 'gamepad',
-      name: 'Gamepad',
+      id: 'testchatskyway',
+      name: 'チャット',
       menuIconURI: 'assets/images/menuIcon.png',
       blockIconURI: 'assets/images/menuIcon.png',
-      color1: '#a0a0a0',
-      color2: '#808080',
-      color3: '#606060',
+      color1: '#e9c46a',
+      color2: '#f4a261',
+      color3: '#e76f51',
 
       blocks: [
         {
-          opcode: 'getAxes',
-          blockType: BlockType.REPORTER,
-          text: '[AXIS] value for [STICK] stick',
+          opcode: 'joinRoom',
+          blockType: BlockType.COMMAND,
+          text: '部屋番号 [ROOM] に入室する',
           arguments: {
-            AXIS: {
-              type: ArgumentType.NUMBER,
-              menu: 'axes',
-              defaultValue: '0'
-            },
-            STICK: {
-              type: ArgumentType.NUMBER,
-              menu: 'sticks',
+            ROOM: {
+              type: ArgumentType.STRING,
+              menu: 'room',
               defaultValue: '0'
             }
           }
         },
         {
-          opcode: 'whenButtonPressed',
+          opcode: 'sendChatText',
+          blockType: BlockType.COMMAND,
+          text: 'チャットテキストを送る [TEXT]',
+          arguments: {
+            TEXT: {
+              type: ArgumentType.STRING,
+              defaultValue: 'hello'
+            }
+          }
+        },
+        {
+          opcode: 'leaveRoom',
+          blockType: BlockType.COMMAND,
+          text: '退室する',
+        },
+        {
+          opcode: 'whenChatTextReceived',
           blockType: BlockType.HAT,
-          text: 'when [BUTTON] button pressed',
-          arguments: {
-            BUTTON: {
-              type: ArgumentType.NUMBER,
-              menu: 'buttons',
-              defaultValue: '12'
-            }
-          }
-        },
-        {
-          opcode: 'isButtonPressed',
-          blockType: BlockType.BOOLEAN,
-          text: '[BUTTON] button pressed?',
-          arguments: {
-            BUTTON: {
-              type: ArgumentType.NUMBER,
-              menu: 'buttons',
-              defaultValue: '12'
-            }
-          },
-          func: 'whenButtonPressed'
+          text: 'チャットテキストを受け取ったとき',
         }
       ],
 
       menus: {
-        sticks: {
+        room: {
           acceptReporters: true,
           items: [
             {
-              text: 'left',
-              value: '0'
+              text: 'abc',
+              value: 'abc'
             },
             {
-              text: 'right',
-              value: '1'
-            }
-          ]
-        },
-        axes: {
-          acceptReporters: true,
-          items: [
-            {
-              text: 'X',
-              value: '0'
-            },
-            {
-              text: 'Y',
-              value: '1'
-            }
-          ]
-        },
-        buttons: {
-          acceptReporters: true,
-          items: [
-            {
-              text: 'up',
-              value: '12'
-            },
-            {
-              text: 'down',
-              value: '13'
-            },
-            {
-              text: 'right',
-              value: '15'
-            },
-            {
-              text: 'left',
-              value: '14'
-            },
-            {
-              text: 'cross',
-              value: '0'
-            },
-            {
-              text: 'circle',
-              value: '1'
-            },
-            {
-              text: 'square',
-              value: '2'
-            },
-            {
-              text: 'triangle',
-              value: '3'
-            },
-            {
-              text: 'left stick',
-              value: '10'
-            },
-            {
-              text: 'right stick',
-              value: '11'
-            },
-            {
-              text: 'left shoulder',
-              value: '4'
-            },
-            {
-              text: 'right shoulder',
-              value: '5'
-            },
-            {
-              text: 'left trigger',
-              value: '6'
-            },
-            {
-              text: 'right trigger',
-              value: '7'
-            },
-            {
-              text: 'share',
-              value: '8'
-            },
-            {
-              text: 'options',
-              value: '9'
-            },
-            {
-              text: 'touch pad',
-              value: '17'
-            },
-            {
-              text: 'PS',
-              value: '16'
+              text: 'ccc',
+              value: 'ccc'
             }
           ]
         }
@@ -186,36 +86,21 @@ class GamepadExtension {
     }
   }
 
-  getAxes(args) {
-    if (this.gamepadIndex === null) {
-      return false
-    }
-
-    const gamepad = navigator.getGamepads()[this.gamepadIndex]
-    if (!gamepad) {
-      return false
-    }
-
-    const stickIndex = Cast.toNumber(args.STICK)
-    const axisIndex = Cast.toNumber(args.AXIS)
-    const sign = axisIndex === 0 ? 1 : -1
-
-    return gamepad.axes[stickIndex * 2 + axisIndex] * sign
+  joinRoom(args) {
+    console.log('joinRoom: ' + args.ROOM)
   }
 
-  whenButtonPressed(args) {
-    if (this.gamepadIndex === null) {
-      return false
-    }
+  sendChatText(args) {
+    console.log('sendChatText: ' + args.TEXT)
+  }
 
-    const gamepad = navigator.getGamepads()[this.gamepadIndex]
-    if (!gamepad) {
-      return false
-    }
+  leaveRoom() {
+    console.log('leaveRoom')
+  }
 
-    const buttonIndex = Cast.toNumber(args.BUTTON)
-    return gamepad.buttons[buttonIndex].pressed
+  whenChatTextReceived(args) {
+    console.log('whenChatTextReceived')
   }
 }
 
-export default GamepadExtension
+export default TextChatSkyWayExtension
