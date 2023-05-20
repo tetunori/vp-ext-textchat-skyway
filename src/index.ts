@@ -9,6 +9,7 @@ class TextChatSkyWayExtension {
   private gamepadIndex: number
 
   private static apikey: string = ''
+  private receivedChatText: string = ''
 
   constructor(runtime: Runtime) {
     this.runtime = runtime
@@ -41,7 +42,7 @@ class TextChatSkyWayExtension {
             ROOM: {
               type: ArgumentType.STRING,
               menu: 'room',
-              defaultValue: '0'
+              defaultValue: 'abc'
             }
           }
         },
@@ -65,7 +66,13 @@ class TextChatSkyWayExtension {
           opcode: 'whenChatTextReceived',
           blockType: BlockType.HAT,
           text: 'チャットテキストを受け取ったとき',
-        }
+        },
+        {
+          opcode: 'getReceivedChatText',
+          blockType: BlockType.REPORTER,
+          text: '受け取ったテキスト',
+        },
+
       ],
 
       menus: {
@@ -101,6 +108,13 @@ class TextChatSkyWayExtension {
   whenChatTextReceived(args) {
     console.log('whenChatTextReceived')
   }
+
+  getReceivedChatText(args) {
+    console.log('getReceivedChatText')
+
+    return 'Hello!!!'
+  }
+
 }
 
 export default TextChatSkyWayExtension
