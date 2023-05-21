@@ -1,7 +1,6 @@
 import Runtime from 'scratch-vm/src/engine/runtime'
 import ArgumentType from 'scratch-vm/src/extension-support/argument-type'
 import BlockType from 'scratch-vm/src/extension-support/block-type'
-import Cast from 'scratch-vm/src/util/cast'
 import Peer from 'skyway-js'
 
 class TextChatSkyWayExtension {
@@ -11,8 +10,8 @@ class TextChatSkyWayExtension {
   private isReceived: boolean = false
   private receivedChatText: string = ''
   private peer: object
-  private skywayContext: object
   private room: object | undefined = undefined
+  private isEntered: boolean = false
 
   constructor(runtime: Runtime) {
     this.runtime = runtime
@@ -68,11 +67,6 @@ class TextChatSkyWayExtension {
           }
         },
         {
-          opcode: 'leaveRoom',
-          blockType: BlockType.COMMAND,
-          text: '退室する'
-        },
-        {
           opcode: 'whenChatTextReceived',
           blockType: BlockType.HAT,
           text: 'チャットテキストを受け取ったとき'
@@ -81,6 +75,42 @@ class TextChatSkyWayExtension {
           opcode: 'getReceivedChatText',
           blockType: BlockType.REPORTER,
           text: '受け取ったテキスト'
+        },
+        // {
+        //   opcode: 'isUserEntered',
+        //   blockType: BlockType.BOOLEAN,
+        //   text: '[USER] が入室している',
+        //   arguments: {
+        //     USER: {
+        //       type: ArgumentType.STRING,
+        //       menu: 'user',
+        //       defaultValue: '相手'
+        //     }
+        //   }
+        // },
+        {
+          opcode: 'whenUserEntered',
+          blockType: BlockType.HAT,
+          text: '[USER] が [ENTER] したとき',
+          arguments: {
+            USER: {
+              type: ArgumentType.STRING,
+              menu: 'user',
+              defaultValue: '相手'
+            },
+            ENTER: {
+              type: ArgumentType.STRING,
+              menu: 'enter',
+              defaultValue: '入室'
+            }
+
+          }
+        },
+
+        {
+          opcode: 'leaveRoom',
+          blockType: BlockType.COMMAND,
+          text: '退室する'
         }
       ],
 
@@ -95,6 +125,32 @@ class TextChatSkyWayExtension {
             {
               text: 'ccc',
               value: 'ccc'
+            }
+          ]
+        },
+        user: {
+          acceptReporters: false,
+          items: [
+            {
+              text: '自分',
+              value: '自分'
+            },
+            {
+              text: '相手',
+              value: '相手'
+            }
+          ]
+        },
+        enter: {
+          acceptReporters: false,
+          items: [
+            {
+              text: '入室',
+              value: '入室'
+            },
+            {
+              text: '退室',
+              value: '退室'
             }
           ]
         }
@@ -113,7 +169,14 @@ class TextChatSkyWayExtension {
 
     if (!this.room) {
       this.room = this.peer.joinRoom(args.ROOM, { mode: 'p2p' })
-      console.log(args.ROOM + 'に入室しました')
+
+      this.room.on(
+        'open',
+        function (data) {
+          console.log(args.ROOM + 'に入室しました')
+          this.isEntered = true
+        }.bind(this)
+      )
 
       this.room.on(
         'data',
@@ -141,6 +204,7 @@ class TextChatSkyWayExtension {
     if (this.room) {
       this.room.close()
       console.log('退室しました')
+      this.isEntered = false
       this.room = undefined
     }
   }
@@ -161,6 +225,36 @@ class TextChatSkyWayExtension {
 
     return this.receivedChatText
   }
+
+  // isUserEntered(args) {
+  //   console.log('isUserEntered: ' + args.USER)
+
+  //   let retValue = false
+
+  //   if (args.USER === '自分') {
+  //     retValue = this.isEntered
+  //   } else {
+  //     // '相手'
+  //     if (this.room && Object.keys(this.room.getPeerConnections()).length > 0) {
+  //       retValue = true
+  //     }
+  //   }
+
+  //   return retValue
+  // }
+
+  whenUserEntered(args) {
+    // console.log('whenUserEntered: ' + args.USER + ', ' + args.ENTER)
+
+    if( args.USER  === '自分'){
+      return args.ENTER === '入室' ? this.isEntered : !this.isEntered;
+    }else{
+      const cond = this.room && Object.keys(this.room.getPeerConnections()).length > 0;
+      return args.ENTER === '入室' ? cond : !cond;
+    }
+
+  }
+
 }
 
 export default TextChatSkyWayExtension
