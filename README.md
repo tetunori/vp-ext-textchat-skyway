@@ -34,6 +34,11 @@ NTTの[SkyWay](https://skyway.ntt.com/ja/)を使ったVisual Programming向け�
 
 次に、Peer A側で以下のブロックを使って、`hello`というテキストを送付してみましょう。すぐあとにPeer B側で受け取った文字列が画面に表示されると完了です。B→Aについても同様に対応することで、双方向通信を実現することができます。
 
+# Samples | サンプル
+## Chatting application | チャットアプリ
+
+## Robot application | ロボットアプリ
+
 
 # Blocks | ブロック詳細仕様
 ## 入/退室 関連ブロック
