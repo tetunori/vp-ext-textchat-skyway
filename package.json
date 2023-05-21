@@ -20,5 +20,9 @@
     "webpack": "^4.44.0",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
+  },
+  "dependencies": {
+    "@skyway-sdk/room": "^1.2.5",
+    "skyway-js": "^4.4.5"
   }
 }

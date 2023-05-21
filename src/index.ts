@@ -2,6 +2,8 @@ import Runtime from 'scratch-vm/src/engine/runtime'
 import ArgumentType from 'scratch-vm/src/extension-support/argument-type'
 import BlockType from 'scratch-vm/src/extension-support/block-type'
 import Cast from 'scratch-vm/src/util/cast'
+import Peer from 'skyway-js';
+
 
 class TextChatSkyWayExtension {
   private runtime: Runtime
@@ -9,7 +11,11 @@ class TextChatSkyWayExtension {
   private gamepadIndex: number
 
   private static apikey: string = ''
+  private isReceived: boolean = false
   private receivedChatText: string = ''
+  private peer: object
+  private skywayContext: object
+  private room: object | undefined = undefined
 
   constructor(runtime: Runtime) {
     this.runtime = runtime
@@ -19,6 +25,8 @@ class TextChatSkyWayExtension {
       if (apikey) {
         TextChatSkyWayExtension.apikey = apikey
         console.log(TextChatSkyWayExtension.apikey)
+        this.peer = new Peer({key: apikey})
+
       }
     }
   }
@@ -95,25 +103,60 @@ class TextChatSkyWayExtension {
 
   joinRoom(args) {
     console.log('joinRoom: ' + args.ROOM)
+
+    if(!this.room){
+      this.room = this.peer.joinRoom(args.ROOM, {mode: 'p2p'});
+      console.log(args.ROOM + 'に入室しました');
+
+      this.room.on('data', function(data){
+        console.log('received:' + data.data);
+        this.receivedChatText = data.data
+        this.isReceived = true;
+      }.bind(this));
+
+    }else{
+      console.log('重複して入室はできません。一度退出してください。');
+    }
+
   }
 
   sendChatText(args) {
-    console.log('sendChatText: ' + args.TEXT)
+    // console.log('sendChatText: ' + args.TEXT)
+
+    if(this.room){
+      this.room.send(args.TEXT);
+    }
   }
 
   leaveRoom() {
-    console.log('leaveRoom')
+    // console.log('leaveRoom')
+    if(this.room){
+      this.room.close();
+      console.log('退室しました')
+      this.room = undefined;
+    }
+
   }
 
   whenChatTextReceived(args) {
-    console.log('whenChatTextReceived')
+    // console.log('whenChatTextReceived')
+
+    if(this.isReceived){
+      this.isReceived = false
+      return true
+    }
+
+    return false;
+
   }
 
   getReceivedChatText(args) {
-    console.log('getReceivedChatText')
+    // console.log('getReceivedChatText')
 
-    return 'Hello!!!'
+    return this.receivedChatText;
   }
+
+
 
 }
 
