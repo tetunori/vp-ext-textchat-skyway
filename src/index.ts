@@ -34,7 +34,7 @@ class TextChatSkyWayExtension {
     const menuIcon =
       'data:image/svg+xml;charset=utf8,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20overflow%3D%22hidden%22%3E%3Cpath%20d%3D%22M12%203C17.5%203%2022%206.58%2022%2011%2022%2015.42%2017.5%2019%2012%2019%2010.76%2019%209.57%2018.82%208.47%2018.5%205.55%2021%202%2021%202%2021%204.33%2018.67%204.7%2017.1%204.75%2016.5%203.05%2015.07%202%2013.13%202%2011%202%206.58%206.5%203%2012%203Z%22%20stroke%3D%22%23595959%22%20fill%3D%22%23FFFFFF%22%2F%3E%3C%2Fsvg%3E'
     return {
-      id: 'testchatskyway',
+      id: 'textchatskyway',
       name: 'チャット',
       menuIconURI: menuIcon,
       blockIconURI: menuIcon,
@@ -51,14 +51,14 @@ class TextChatSkyWayExtension {
             ROOM: {
               type: ArgumentType.STRING,
               menu: 'room',
-              defaultValue: 'abc'
+              defaultValue: '#1'
             }
           }
         },
         {
           opcode: 'sendChatText',
           blockType: BlockType.COMMAND,
-          text: 'チャットテキストを送る [TEXT]',
+          text: 'チャットテキスト [TEXT] を送る',
           arguments: {
             TEXT: {
               type: ArgumentType.STRING,
@@ -103,7 +103,6 @@ class TextChatSkyWayExtension {
               menu: 'enter',
               defaultValue: '入室'
             }
-
           }
         },
 
@@ -113,18 +112,29 @@ class TextChatSkyWayExtension {
           text: '退室する'
         }
       ],
-
       menus: {
         room: {
           acceptReporters: true,
           items: [
             {
-              text: 'abc',
-              value: 'abc'
+              text: '#1',
+              value: '#1'
             },
             {
-              text: 'ccc',
-              value: 'ccc'
+              text: '#2',
+              value: '#2'
+            },
+            {
+              text: '#3',
+              value: '#3'
+            },
+            {
+              text: '#4',
+              value: '#4'
+            },
+            {
+              text: '#5',
+              value: '#5'
             }
           ]
         },
@@ -159,9 +169,9 @@ class TextChatSkyWayExtension {
   }
 
   joinRoom(args) {
-    console.log('joinRoom: ' + args.ROOM)
+    // console.log('joinRoom: ' + args.ROOM)
 
-    // ignored if api key was alread input.
+    // Ignored if api key was already input.
     this.inputApiKey()
     if (!this.peer) {
       return
@@ -172,7 +182,7 @@ class TextChatSkyWayExtension {
 
       this.room.on(
         'open',
-        function (data) {
+        function () {
           console.log(args.ROOM + 'に入室しました')
           this.isEntered = true
         }.bind(this)
@@ -181,7 +191,7 @@ class TextChatSkyWayExtension {
       this.room.on(
         'data',
         function (data) {
-          console.log('received:' + data.data)
+          // console.log('received:' + data.data)
           this.receivedChatText = data.data
           this.isReceived = true
         }.bind(this)
@@ -246,15 +256,13 @@ class TextChatSkyWayExtension {
   whenUserEntered(args) {
     // console.log('whenUserEntered: ' + args.USER + ', ' + args.ENTER)
 
-    if( args.USER  === '自分'){
-      return args.ENTER === '入室' ? this.isEntered : !this.isEntered;
-    }else{
-      const cond = this.room && Object.keys(this.room.getPeerConnections()).length > 0;
-      return args.ENTER === '入室' ? cond : !cond;
+    if (args.USER === '自分') {
+      return args.ENTER === '入室' ? this.isEntered : !this.isEntered
+    } else {
+      const cond = this.room && Object.keys(this.room.getPeerConnections()).length > 0
+      return args.ENTER === '入室' ? cond : !cond
     }
-
   }
-
 }
 
 export default TextChatSkyWayExtension
