@@ -2,22 +2,22 @@
 Version 0.5.0   
 
 # Description | 説明
-1 on 1 Text Chatting extension for VP with [SkyWay](https://skyway.ntt.com/ja/) by NTT.
+1 on 1 Text Chatting extension for VP with [SkyWay](https://skyway.ntt.com/ja/) by NTT.  
 NTTの[SkyWay](https://skyway.ntt.com/ja/)を使ったVisual Programming向けの2者間テキストチャット機能拡張モジュールです。 
 > **Warning**
 > We are using old version of SkyWay.  
 > 旧版のSkyWayを使っていますので、ご注意ください。
 
 # How to Use | 使い方
-## Get API Key | APIキーを取得する
-こちらの手順でAPIキー取得してください。  
+## 1. Get API Key | APIキーを取得する
+[こちらの手順](./api-key.md)で旧版SkyWayのAPIキーを取得してください。  
 以下のようなIDが取得できますので、コピペできるようにご準備ください。
 ```
 // API Key
 12345678-abcd-ef12-3456-7890abcdef01
 ```
 
-## Load extension | 拡張機能をロードする
+## 2. Load extension | 拡張機能をロードする
 以下は＊＊＊に組み込んだ時の例の手順です。  
 最初にAPI Keyを入力するプロンプトが出るので、上記でコピーしたAPI Keyをペーストしてください。  
 
@@ -26,7 +26,7 @@ NTTの[SkyWay](https://skyway.ntt.com/ja/)を使ったVisual Programming向け�
 
 ブロックカテゴリの一番下に"チャット"が表示されれば、準備完了です。
 
-## ブロックを使う
+## 3. Use blocks | ブロックを使う
 まずは、チャットをする2つのPeer A, Peer Bにおいて、同じ部屋番号を指定して、入室します。
 
 双方で入室ができたら、Peer AからPeer Bにチャットテキストを送ってみましょう。  
@@ -54,5 +54,4 @@ Copyright (c) 2023 [Tetsunori Nakayama](https://github.com/tetunori). MIT Licens
 
 # Reference📖
 
-## Forked from
 [scratch-extension-gamepad](https://github.com/eqot/scratch-extension-gamepad) by [eqot](https://github.com/eqot). MIT License.
