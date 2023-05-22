@@ -4,7 +4,7 @@ Version 0.5.0
 # Description | 説明
 1 on 1 Text Chatting extension for VP with [SkyWay](https://skyway.ntt.com/ja/) by NTT.  
 NTTの[SkyWay](https://skyway.ntt.com/ja/)を使ったVisual Programming向けの2者間テキストチャット機能拡張モジュールです。 
-> **Warning**
+> **Warning**  
 > We are using old version of SkyWay.  
 > 旧版のSkyWayを使っていますので、ご注意ください。
 
@@ -21,7 +21,7 @@ NTTの[SkyWay](https://skyway.ntt.com/ja/)を使ったVisual Programming向け�
 以下は＊＊＊に組み込んだ時の例の手順です。  
 最初にAPI Keyを入力するプロンプトが出るので、上記でコピーしたAPI Keyをペーストしてください。  
 
-> **Note**
+> **Note**  
 > ここで誤ってキャンセルしてしまっても、後ほど入室時に再度入力できますので、ご安心下さい。
 
 ブロックカテゴリの一番下に"チャット"が表示されれば、準備完了です。
