@@ -1,7 +1,8 @@
 import TextChatSkyWayExtensionCore from './core'
 import ArgumentType from 'scratch-vm/src/extension-support/argument-type'
 import BlockType from 'scratch-vm/src/extension-support/block-type'
-;(function (Scratch) {
+
+(function (Scratch) {
   'use strict'
 
   class TextChatSkyWayExtensionES extends TextChatSkyWayExtensionCore {
