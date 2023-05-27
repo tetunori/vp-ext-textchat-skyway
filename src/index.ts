@@ -1,3 +1,9 @@
-import TextChatSkyWayExtension from './core'
+import TextChatSkyWayExtensionCore from './core'
 
-Scratch.extensions.register(new TextChatSkyWayExtension());
+class TextChatSkyWayExtension extends TextChatSkyWayExtensionCore {
+  getApiKey() {
+    return window.prompt('SkyWayのAPIキーを入力してください: ', '')
+  }
+}
+
+Scratch.extensions.register(new TextChatSkyWayExtension())

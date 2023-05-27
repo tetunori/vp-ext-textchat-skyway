@@ -3,7 +3,7 @@ import ArgumentType from 'scratch-vm/src/extension-support/argument-type'
 import BlockType from 'scratch-vm/src/extension-support/block-type'
 import Peer from 'skyway-js'
 
-class TextChatSkyWayExtension {
+class TextChatSkyWayExtensionCore {
   private runtime: Runtime
 
   private static apikey: string = ''
@@ -19,15 +19,20 @@ class TextChatSkyWayExtension {
   }
 
   inputApiKey() {
-    if (TextChatSkyWayExtension.apikey === '') {
-      const apikey = window.prompt('SkyWayのAPIキーを入力してください: ', '')
+    if (TextChatSkyWayExtensionCore.apikey === '') {
+      const apikey = this.getApiKey();
 
       if (apikey !== '' && apikey !== null) {
-        TextChatSkyWayExtension.apikey = apikey
-        console.log(TextChatSkyWayExtension.apikey)
+        TextChatSkyWayExtensionCore.apikey = apikey
+        console.log(TextChatSkyWayExtensionCore.apikey)
         this.peer = new Peer({ key: apikey })
       }
     }
+  }
+
+  getApiKey(): string | null {
+    // To be overwritten...
+    return ''
   }
 
   getInfo() {
@@ -265,4 +270,4 @@ class TextChatSkyWayExtension {
   }
 }
 
-export default TextChatSkyWayExtension
+export default TextChatSkyWayExtensionCore

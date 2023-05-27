@@ -1,9 +1,13 @@
-import TextChatSkyWayExtension from './core'
+import TextChatSkyWayExtensionCore from './core'
 
 (function (Scratch) {
   'use strict'
 
-  class TextChatSkyWayExtensionTW extends TextChatSkyWayExtension {}
+  class TextChatSkyWayExtensionTW extends TextChatSkyWayExtensionCore {
+    getApiKey() {
+      return window.prompt('SkyWayのAPIキーを入力してください: ', '')
+    }
+  }
 
   Scratch.extensions.register(new TextChatSkyWayExtensionTW())
 })(Scratch)
