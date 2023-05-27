@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "webpack --config webpack.common.js",
+    "build": "yarn buildcm && yarn buildtw && yarn buildes",
+    "buildcm": "webpack --config webpack.common.js",
     "buildtw": "webpack --config webpack.turbowarp.js",
     "buildes": "webpack --config webpack.esheepicques.js",
     "localhost": "http-server -p 8000"
