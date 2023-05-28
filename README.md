@@ -28,6 +28,37 @@ https://tetunori.github.io/vp-ext-textchat-skyway/dist/index.js
 なお、拡張機能の登録方法はツール毎に異なるため、各サイトの指示に従ってください。  
 `TurboWarp`や`E羊icques`については、以下の手順説明もご参照ください。
 <details><summary>TurboWarpやE羊icquesでの詳細手順を見るにはこちらをクリック</summary>
+
+### TurboWarpで登録する
+<img src="./images/TurboWarpScreen.png" alt="TurboWarpScreen" width="640px">
+
+`TurboWarp`向けのライブラリは以下となります。
+```
+https://tetunori.github.io/vp-ext-textchat-skyway/dist/TurboWarp.js
+```
+ただし、`TurboWarp`はセキュリティのポリシー上、このライブラリをそのまま使うことはできません。一度ライブラリをダウンロードし、`localhost:8000`でserveしたものを読み取る事で初めて使うことができます。以下の手順でご確認ください。
+1. [ライブラリファイル](https://github.com/tetunori/vp-ext-textchat-skyway/blob/main/dist/TurboWarp.js)(TurboWarp.js)をダウンロードする。
+2. `http-server -p 8000` や `yarn localhost`(このリポジトリをCloneしている場合)等でダウンロードしたファイルをserveします。
+3. [以下のURL](https://turbowarp.org/editor?extension=http://localhost:8000/dist/TurboWarp.js)にアクセスすればOKです。ファイルパスはご自分の環境に併せて変更してください。
+```
+https://turbowarp.org/editor?extension=http://localhost:8000/dist/TurboWarp.js
+```
+
+### E羊icquesで登録する
+<img src="./images/EsheepicquesScreen.png" alt="EsheepicquesScreen" width="640px">
+
+> **Warning**  
+> 登録はできるのですが、その後不具合が見られるため、完全に動作できませんので、ご注意ください。
+
+`E羊icques`向けのライブラリは以下となります。
+```
+https://tetunori.github.io/vp-ext-textchat-skyway/dist/Esheepicques.js
+```
+ただし、`E羊icques`のクエリを使って下記を渡してあげることで、拡張機能が展開された状態で表示することが可能です。
+```
+https://sheeptester.github.io/scratch-gui/?extension=https://tetunori.github.io/vp-ext-textchat-skyway/dist/Esheepicques.js
+```
+[E羊icquesのお試しリンク](https://sheeptester.github.io/scratch-gui/?extension=https://tetunori.github.io/vp-ext-textchat-skyway/dist/Esheepicques.js)
 </details>
 
 最初にAPIキーを入力するプロンプトが出るので、上記手順1.でコピーしたAPIキーを貼り付けて、`OK`ボタンを押してください。  
@@ -69,6 +100,8 @@ Bob → Aliceについても同様に対応することで、双方向の通信�
 | :---: | :---: | :---: | :---: |
 | Standard ver. | [sample1-A.sb3](./sample/sample1-A.sb3) | [sample1-B.sb3](./sample/sample1-B.sb3) |  |
 | No prompt ver. | [sample2-A.sb3](./sample/sample2-A.sb3) | [sample2-B.sb3](./sample/sample2-B.sb3) | Need [this lib](https://github.com/tetunori/vp-ext-textchat-skyway/blob/main/dist/Esheepicques.js) |
+| E羊icquesで直接開く | [sample2-A.sb3](./sample/sample2-A.sb3) | [sample2-B.sb3](./sample/sample2-B.sb3) | Need [this lib](https://github.com/tetunori/vp-ext-textchat-skyway/blob/main/dist/Esheepicques.js) |
+
 
 APIキー入力後、緑の旗を押してください。その後は好きにチャットできる仕様です。
 
