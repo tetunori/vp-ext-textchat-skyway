@@ -31,7 +31,7 @@ import BlockType from 'scratch-vm/src/extension-support/block-type'
     registApiKey(args) {
       // console.log('registApiKey: ' + args.APIKEY)
       TextChatSkyWayExtensionES._apikey = args.APIKEY
-      this.inputApiKey();
+      this.inputApiKey()
     }
   }
   Scratch.extensions.register(new TextChatSkyWayExtensionES())

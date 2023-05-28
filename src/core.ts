@@ -12,6 +12,7 @@ class TextChatSkyWayExtensionCore {
   private peer: object
   private room: object | undefined = undefined
   private isEntered: boolean = false
+  private isConnected: boolean = false
 
   constructor(runtime: Runtime) {
     this.runtime = runtime
@@ -20,12 +21,19 @@ class TextChatSkyWayExtensionCore {
 
   inputApiKey() {
     if (TextChatSkyWayExtensionCore.apikey === '') {
-      const apikey = this.getApiKey();
+      const apikey = this.getApiKey()
 
       if (apikey !== '' && apikey !== null) {
         TextChatSkyWayExtensionCore.apikey = apikey
         console.log(TextChatSkyWayExtensionCore.apikey)
         this.peer = new Peer({ key: apikey })
+        this.peer.on(
+          'open',
+          function () {
+            console.log('シグナリングサーバへ正常に接続できました')
+            this.isConnected = true
+          }.bind(this)
+        )
       }
     }
   }
@@ -81,18 +89,6 @@ class TextChatSkyWayExtensionCore {
           blockType: BlockType.REPORTER,
           text: '受け取ったテキスト'
         },
-        // {
-        //   opcode: 'isUserEntered',
-        //   blockType: BlockType.BOOLEAN,
-        //   text: '[USER] が入室している',
-        //   arguments: {
-        //     USER: {
-        //       type: ArgumentType.STRING,
-        //       menu: 'user',
-        //       defaultValue: '相手'
-        //     }
-        //   }
-        // },
         {
           opcode: 'whenUserEntered',
           blockType: BlockType.HAT,
@@ -173,7 +169,7 @@ class TextChatSkyWayExtensionCore {
     }
   }
 
-  joinRoom(args) {
+  joinRoom(args: any, util: any): void {
     // console.log('joinRoom: ' + args.ROOM)
 
     // Ignored if api key was already input.
@@ -183,24 +179,29 @@ class TextChatSkyWayExtensionCore {
     }
 
     if (!this.room) {
-      this.room = this.peer.joinRoom(args.ROOM, { mode: 'p2p' })
+      if (this.isConnected) {
+        this.room = this.peer.joinRoom(args.ROOM, { mode: 'p2p' })
 
-      this.room.on(
-        'open',
-        function () {
-          console.log(args.ROOM + 'に入室しました')
-          this.isEntered = true
-        }.bind(this)
-      )
+        this.room?.on(
+          'open',
+          function () {
+            console.log(args.ROOM + 'に入室しました')
+            this.isEntered = true
+          }.bind(this)
+        )
 
-      this.room.on(
-        'data',
-        function (data) {
-          // console.log('received:' + data.data)
-          this.receivedChatText = data.data
-          this.isReceived = true
-        }.bind(this)
-      )
+        this.room?.on(
+          'data',
+          function (data) {
+            // console.log('received:' + data.data)
+            this.receivedChatText = data.data
+            this.isReceived = true
+          }.bind(this)
+        )
+      } else {
+        console.log('接続中...')
+        setTimeout(this.joinRoom.bind(this), 100, args, util)
+      }
     } else {
       console.log('重複して入室はできません。一度退出してください。')
     }
@@ -240,23 +241,6 @@ class TextChatSkyWayExtensionCore {
 
     return this.receivedChatText
   }
-
-  // isUserEntered(args) {
-  //   console.log('isUserEntered: ' + args.USER)
-
-  //   let retValue = false
-
-  //   if (args.USER === '自分') {
-  //     retValue = this.isEntered
-  //   } else {
-  //     // '相手'
-  //     if (this.room && Object.keys(this.room.getPeerConnections()).length > 0) {
-  //       retValue = true
-  //     }
-  //   }
-
-  //   return retValue
-  // }
 
   whenUserEntered(args) {
     // console.log('whenUserEntered: ' + args.USER + ', ' + args.ENTER)
