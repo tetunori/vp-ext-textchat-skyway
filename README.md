@@ -11,7 +11,7 @@ NTTの[SkyWay](https://skyway.ntt.com/ja/)を使ったVisual Programming向け�
 > 旧版のSkyWayを使っています。[最新版](https://skyway.ntt.com/ja/)ではないのでご注意ください。
 
 # How to Use | 使い方
-## 1. Get API Key | APIキーを取得する
+## 1. Getting API Key | APIキーを取得する
 [こちらの手順](./api-key.md)で旧版SkyWayのAPIキーを取得してください。  
 以下のようなIDのテキストが取得できますので、コピペできるようにご準備ください。
 ```
@@ -19,11 +19,17 @@ NTTの[SkyWay](https://skyway.ntt.com/ja/)を使ったVisual Programming向け�
 12345678-abcd-ef12-3456-7890abcdef01
 ```
 
-## 2. Load extension | 拡張機能をロードする
+## 2. Loading extension | 拡張機能をロードする
 以下のURLにある`js`ファイルを拡張機能として登録してください。
 ```
 https://tetunori.github.io/vp-ext-textchat-skyway/dist/index.js
 ```
+
+なお、拡張機能の登録方法はツール毎に異なるため、各サイトの指示に従ってください。  
+`TurboWarp`や`E羊icques`については、以下の手順説明もご参照ください。
+<details><summary>TurboWarpやE羊icquesでの詳細手順を見るにはこちらをクリック</summary>
+</details>
+
 最初にAPIキーを入力するプロンプトが出るので、上記手順1.でコピーしたAPIキーを貼り付けて、`OK`ボタンを押してください。  
 <img src="./images/inputapikey.png" alt="inputapikey" width="320px">
 
@@ -33,33 +39,27 @@ https://tetunori.github.io/vp-ext-textchat-skyway/dist/index.js
 ブロックカテゴリの一番下に"チャット"が表示されれば、準備完了です。  
 <img src="./images/chatCategory.png" alt="chatCategory" width="320px">
 
-> **Note**  
-> なお、拡張機能の登録方法はツール毎に異なるため、各サイトの指示に従ってください。  
-`TurboWarp`や`E羊icques`については、以下の手順説明もご参照ください。
-<details><summary>`TurboWarp`や`E羊icques`での詳細手順を見るにはこちらをクリック</summary>
-</details>
-
 ## 3. Chatting | チャットをする
-Alice/Bobの２人でチャットをする流れとしては、以下の通りです。(Alice/Bobが逆の場合も2, 3と同様です)
+Alice/Bobの２人でチャットをする流れとしては、以下の通りです。(Alice/Bobが逆の場合も同様です)
 1. 双方で同じ部屋番号を指定して入室する
 2. Aliceからチャットテキストを送る
 3. Bobが受け取ったテキストを確認する
 
 ### 3-1. 入室する
-AliceとBobの双方で、`部屋番号 <部屋番号テキスト> に入室する`ブロックの`<部屋番号テキスト>`部分を選択肢から選ぶか、お好きな文字を入力して、ブロックを実行してください。  
+AliceとBobの双方で、`部屋番号 <部屋番号テキスト> に入室する`ブロックの`<部屋番号テキスト>`部分を選択肢から選ぶか、お好きな文字を設定して、ブロックを実行してください。  
 <img src="./images/enterRoomBlock.png" alt="enterRoomBlock" width="480px">
 
 ### 3-2. テキストを送る
 双方で入室ができたら、AliceからBobにチャットテキストを送ってみましょう。  
-Aliceのスクリプトの中で、`チャットテキスト <テキスト> を送る`ブロックの`<テキスト>`部分にお好きな字を入力して、ブロックを実行してください。  
+Aliceのスクリプトの中で、`チャットテキスト <テキスト> を送る`ブロックの`<テキスト>`部分にお好きな文字列を入力して、ブロックを実行してください。  
 <img src="./images/sendTextBlock.png" alt="sendTextBlock" width="480px">
 
 ### 3-3. 受信したテキストを見る
-上記で送信が成功していれば、Bob側のスクリプトで`受け取ったテキスト`ブロックを実行すると、受信したテキストを確認することができます。  
-また、`チャットテキストを受け取ったとき`と組み合わせると使いやすくなります。  
+上記で送信が成功していれば、Bob側のスクリプトで`受け取ったテキスト`ブロックを実行することで、受信したテキストを確認できます。  
+また、`チャットテキストを受け取ったとき`ブロックと組み合わせると使いやすくなります。  
 <img src="./images/receivedText.png" alt="receivedText" width="480px">
 
-Bob → Aliceについても同様に対応することで、双方向通信を実現することができます。以下のサンプルで確認してみましょう。
+Bob → Aliceについても同様に対応することで、双方向の通信を実現することができます。以下のサンプルで確認してみましょう。
 
 # Samples | サンプル
 ## Chatting application | チャットアプリ
@@ -124,4 +124,7 @@ APIキーが登録されていない状態でこのブロックを実行する�
 Copyright (c) 2023 [Tetsunori Nakayama](https://github.com/tetunori). MIT License.
 
 # Reference📖
-[scratch-extension-gamepad](https://github.com/eqot/scratch-extension-gamepad) by [eqot](https://github.com/eqot). MIT License.
+- [scratch-extension-gamepad](https://github.com/eqot/scratch-extension-gamepad) by [eqot](https://github.com/eqot). MIT License.  
+- [E羊icques](https://github.com/SheepTester/scratch-gui) by [SheepTester](https://github.com/SheepTester). BSD 3-Clause "New" or "Revised" License.  
+- [TurboWarp](https://github.com/TurboWarp) repositories. MIT License and BSD 3-Clause "New" or "Revised" License.  
+
