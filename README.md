@@ -35,7 +35,9 @@ https://tetunori.github.io/vp-ext-textchat-skyway/dist/index.js
 
 > **Note**  
 > なお、拡張機能の登録方法はツール毎に異なるため、各サイトの指示に従ってください。  
-``や``については、以下の手順説明もご参照ください。🌟
+`TurboWarp`や`E羊icques`については、以下の手順説明もご参照ください。
+<details><summary>`TurboWarp`や`E羊icques`での詳細手順を見るにはこちらをクリック</summary>
+</details>
 
 ## 3. Chatting | チャットをする
 Alice/Bobの２人でチャットをする流れとしては、以下の通りです。(Alice/Bobが逆の場合も2, 3と同様です)
@@ -54,7 +56,7 @@ Aliceのスクリプトの中で、`チャットテキスト <テキスト> を�
 
 ### 3-3. 受信したテキストを見る
 上記で送信が成功していれば、Bob側のスクリプトで`受け取ったテキスト`ブロックを実行すると、受信したテキストを確認することができます。  
-また、`チャットテキストを受け取ったとき`と組み合わせると使いやすくなります。
+また、`チャットテキストを受け取ったとき`と組み合わせると使いやすくなります。  
 <img src="./images/receivedText.png" alt="receivedText" width="480px">
 
 Bob → Aliceについても同様に対応することで、双方向通信を実現することができます。以下のサンプルで確認してみましょう。
@@ -71,13 +73,52 @@ Bob → Aliceについても同様に対応することで、双方向通信を�
 APIキー入力後、緑の旗を押してください。その後は好きにチャットできる仕様です。
 
 # Blocks | ブロック詳細仕様
+
+<details><summary>CLICK ME to show Block specs in detail</summary>
+
 ## 入/退室 関連ブロック
-## テキスト送付ブロック
-## テキスト受け取り時のブロック
-## 
+### 入室
+<img src="./images/enterRoomBlock.png" alt="enterRoomBlock" width="480px">
 
+引数で指定された名前の部屋に入ることができます。部屋を切り替える場合は、複数の部屋に同時に入ることはできないので、一度退室してからもう一度入室してください。引数は選択肢を選ぶだけでなく、テキストで指定することも可能です。  
+APIキーが登録されていない状態でこのブロックを実行すると、プロンプトが表示されAPIキーの入力をすることができます。
 
+### 退室
+<img src="./images/leaveRoomBlock.png" alt="leaveRoomBlock" width="200px">
 
+現在入室している部屋から退出します。  
+
+### 入・退室したとき
+<img src="./images/whenEnterLeaveRoomBlock.png" alt="whenEnterLeaveRoomBlock" width="640px">
+
+自分・相手が、入室・退室したときの合計４通りの事象に対してトリガをかけることができます。相手が退室したのトリガが発行されるのは、部屋にいる自分以外の全員がいなくなった時となるため、誤って３か所から入室してしまっている場合など、ご注意ください。  
+
+### APIキー登録
+> **Warning**  
+> こちらは、[Esheepicques.js](./dist/Esheepicques.js)のライブラリにのみ含まれるブロックで、通常は使いません。
+
+<img src="./images/registerAPIKeyBlock.png" alt="registerAPIKeyBlock" width="320px">
+
+引数にAPIキーのテキストを入れて実行すると、APIキーの登録ができます。
+
+## テキスト送付に関するブロック
+### チャットテキスト送信
+<img src="./images/sendTextBlock.png" alt="sendTextBlock" width="480px">
+
+引数のテキストを相手に送ることができます。相手が入室していない場合はテキストは捨てられます。
+
+## テキスト受け取りに関するブロック
+### 受け取ったテキスト
+<img src="./images/receivedTextBlock.png" alt="receivedTextBlock" width="260px">
+
+相手が送信したテキストを確認することができます。次の送信が発生すると上書きされます。
+
+### チャットテキストを受け取ったとき
+<img src="./images/whenReceiveTextBlock.png" alt="whenReceiveTextBlock" width="360px">
+
+相手がテキストを送信した際にトリガがかかります。これをトリガに受け取ったテキストを処理するのがセオリーです。
+
+</details>
 
 # License⚖️
 Copyright (c) 2023 [Tetsunori Nakayama](https://github.com/tetunori). MIT License.
