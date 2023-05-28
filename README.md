@@ -100,8 +100,6 @@ Bob → Aliceについても同様に対応することで、双方向の通信�
 | :---: | :---: | :---: | :---: |
 | Standard ver. | [sample1-A.sb3](./sample/sample1-A.sb3) | [sample1-B.sb3](./sample/sample1-B.sb3) |  |
 | No prompt ver. | [sample2-A.sb3](./sample/sample2-A.sb3) | [sample2-B.sb3](./sample/sample2-B.sb3) | Need [this lib](https://github.com/tetunori/vp-ext-textchat-skyway/blob/main/dist/Esheepicques.js) |
-| E羊icquesで直接開く | [sample2-A.sb3](./sample/sample2-A.sb3) | [sample2-B.sb3](./sample/sample2-B.sb3) | Need [this lib](https://github.com/tetunori/vp-ext-textchat-skyway/blob/main/dist/Esheepicques.js) |
-
 
 APIキー入力後、緑の旗を押してください。その後は好きにチャットできる仕様です。
 
